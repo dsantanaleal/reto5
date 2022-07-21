@@ -66,7 +66,7 @@ public class MesasView extends javax.swing.JPanel {
 
     private void btnMesa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesa1ActionPerformed
         // TODO add your handling code here:
-        mesaController.listarPedidos(this);
+        //mesaController.listarPedidos(this);
     }//GEN-LAST:event_btnMesa1ActionPerformed
 
 
@@ -75,5 +75,4 @@ public class MesasView extends javax.swing.JPanel {
     private javax.swing.JLabel lblMesa1;
     // End of variables declaration//GEN-END:variables
 
-    MesaController mesaController = new MesaController();
 }

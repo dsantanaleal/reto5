@@ -5,8 +5,10 @@
 
 package com.misiontic.retos.reto5;
 
+import com.misiontic.retos.reto5.controller.MesaController;
 import com.misiontic.retos.reto5.controller.PlatoController;
 import com.misiontic.retos.reto5.model.Mesa;
+import com.misiontic.retos.reto5.model.Pedido;
 import com.misiontic.retos.reto5.model.Plato;
 import com.misiontic.retos.reto5.view.RestauranteView;
 import java.util.ArrayList;
@@ -39,30 +41,15 @@ public class Reto5 {
         platos.add(p7);
         
         
-        
-        List<Mesa> mesas = new ArrayList<>();
-        
-        Mesa mesa1 = new Mesa(1);
-        mesas.add(mesa1);
-        Mesa mesa2 = new Mesa(2);
-        mesas.add(mesa2);
-        Mesa mesa3 = new Mesa(3);
-        mesas.add(mesa3);
-        Mesa mesa4 = new Mesa(4);
-        mesas.add(mesa4);
-        Mesa mesa5 = new Mesa(5);
-        mesas.add(mesa5);
-        Mesa mesa6 = new Mesa(6);
-        mesas.add(mesa6);
-        Mesa mesa7 = new Mesa(7);
-        mesas.add(mesa7);
-        
-        
-        
-        
         PlatoController platoController = new PlatoController(platos);
         
         platoController.mostrarPlatos();
+        
+        
+        Pedido pedido1 = new Pedido(1);
+        pedido1.addPlato(p7);
+        
+        
         
         
         try {
@@ -85,8 +72,30 @@ public class Reto5 {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RestauranteView().setVisible(true);
+                new RestauranteView(new MesaController(mesas())).setVisible(true);
             }
         });
+    }
+    
+    public static Set<Mesa> mesas() {
+        Set<Mesa> mesas = new HashSet<>();
+        
+        Mesa mesa1 = new Mesa(1);
+        mesas.add(mesa1);
+        Mesa mesa2 = new Mesa(2);
+        mesas.add(mesa2);
+        Mesa mesa3 = new Mesa(3);
+        mesas.add(mesa3);
+        Mesa mesa4 = new Mesa(4);
+        mesas.add(mesa4);
+        Mesa mesa5 = new Mesa(5);
+        mesas.add(mesa5);
+        Mesa mesa6 = new Mesa(6);
+        mesas.add(mesa6);
+        Mesa mesa7 = new Mesa(7);
+        mesas.add(mesa7);
+        Mesa mesa8 = new Mesa(8);
+        mesas.add(mesa8);
+        return mesas;
     }
 }

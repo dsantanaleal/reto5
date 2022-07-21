@@ -4,7 +4,8 @@
  */
 package com.misiontic.retos.reto5.view;
 
-import javax.swing.JPanel;
+import com.misiontic.retos.reto5.controller.MesaController;
+import java.awt.GridLayout;
 
 /**
  *
@@ -15,10 +16,12 @@ public class RestauranteView extends javax.swing.JFrame {
     /**
      * Creates new form RestauranteView
      */
-    public RestauranteView() {
+    public RestauranteView(MesaController mesaController) {
+        this.mesaController = mesaController;
         initComponents();
-        
-        jTabbedPane1.add("Mesas", new MesasView());
+        panelMesas.setLayout(new GridLayout(4,4));
+        mesaController.loadMesas(panelMesas);
+        //jTabbedPane1.add("Mesas", new MesasView());
     }
 
     /**
@@ -31,23 +34,24 @@ public class RestauranteView extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        panelMesas = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        btnAgregarMesa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelMesasLayout = new javax.swing.GroupLayout(panelMesas);
+        panelMesas.setLayout(panelMesasLayout);
+        panelMesasLayout.setHorizontalGroup(
+            panelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 471, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelMesasLayout.setVerticalGroup(
+            panelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 216, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Mesas", jPanel1);
+        jTabbedPane1.addTab("Mesas", panelMesas);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -62,19 +66,30 @@ public class RestauranteView extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Mesa", jPanel2);
 
+        btnAgregarMesa.setText("Nueva Mesa");
+        btnAgregarMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarMesaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAgregarMesa)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(70, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addComponent(btnAgregarMesa)
+                .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -82,10 +97,17 @@ public class RestauranteView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAgregarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMesaActionPerformed
+        // TODO add your handling code here:
+        mesaController.agregarMesa(panelMesas);
+    }//GEN-LAST:event_btnAgregarMesaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btnAgregarMesa;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel panelMesas;
     // End of variables declaration//GEN-END:variables
 
+    private MesaController mesaController;
 }
