@@ -23,4 +23,12 @@ public class Pedido {
     public void addPlato(Plato plato) {
         this.platos.add(plato);
     }
+
+    public double obtenerValorPedido(){
+        double valor=0.0;
+        for(Plato item: this.platos){
+            valor += item.getPrecio();
+        }
+        return valor;
+    }
 }
