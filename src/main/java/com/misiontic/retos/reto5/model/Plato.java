@@ -12,10 +12,12 @@ public class Plato {
     
     int id;
     String nombre;
+    double precio;
     
-    public Plato(int id, String nombre) {
+    public Plato(int id, String nombre, double precio) {
         this.id = id;
         this.nombre = nombre;
+        this.precio = precio;
     }
     
     public int getId() {
@@ -25,6 +27,8 @@ public class Plato {
     public String getNombre() {
         return this.nombre;
     }
+
+    public double getPrecio(){ return this.precio; }
     
     public String toString() {
         return String.format("%d. %s", id, nombre);

@@ -15,6 +15,7 @@ public class Mesa {
     
     int numero;
     Set<Pedido> pedidos = new HashSet<>();
+    boolean estaLibre = true;
     
     public Mesa(int numero) {
         this.numero = numero;
@@ -23,7 +24,15 @@ public class Mesa {
     public int getNumero() {
         return numero;
     }
-    
+
+    public boolean isEstaLibre() {
+        return estaLibre;
+    }
+
+    public void setEstaLibre(boolean estaLibre) {
+        this.estaLibre = estaLibre;
+    }
+
     public Set<Pedido> getPedidos() {
         return pedidos;
     }

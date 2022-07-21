@@ -23,13 +23,13 @@ public class Reto5 {
     public static void main(String[] args) {
         
         Set<Plato> platos = new HashSet<>();
-        Plato p1 = new Plato(1, "Bandeja Paisa");
-        Plato p2 = new Plato(2, "Arroz Paisa");
-        Plato p3 = new Plato(3, "Frijolada");
-        Plato p4 = new Plato(4, "Mojarra Frita");
-        Plato p5 = new Plato(5, "Ajiaco");
-        Plato p6 = new Plato(6, "Bandeja Paisa");
-        Plato p7 = new Plato(7, "Churrasco");
+        Plato p1 = new Plato(1, "Bandeja Paisa",21000.00);
+        Plato p2 = new Plato(2, "Arroz Paisa",20000.00);
+        Plato p3 = new Plato(3, "Frijolada",25000.00);
+        Plato p4 = new Plato(4, "Mojarra Frita",35000.00);
+        Plato p5 = new Plato(5, "Ajiaco",20000.00);
+        Plato p6 = new Plato(6, "Arroz con camarones",35000.00);
+        Plato p7 = new Plato(7, "Churrasco",22000.00);
         platos.add(p1);
         platos.add(p2);
         platos.add(p3);
