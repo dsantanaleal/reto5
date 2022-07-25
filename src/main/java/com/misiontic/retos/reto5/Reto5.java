@@ -23,35 +23,6 @@ import java.util.Set;
 public class Reto5 {
 
     public static void main(String[] args) {
-        
-        Set<Plato> platos = new HashSet<>();
-        Plato p1 = new Plato(1, "Bandeja Paisa",21000.00);
-        Plato p2 = new Plato(2, "Arroz Paisa",20000.00);
-        Plato p3 = new Plato(3, "Frijolada",25000.00);
-        Plato p4 = new Plato(4, "Mojarra Frita",35000.00);
-        Plato p5 = new Plato(5, "Ajiaco",20000.00);
-        Plato p6 = new Plato(6, "Arroz con camarones",35000.00);
-        Plato p7 = new Plato(7, "Churrasco",22000.00);
-        platos.add(p1);
-        platos.add(p2);
-        platos.add(p3);
-        platos.add(p4);
-        platos.add(p5);
-        platos.add(p6);
-        platos.add(p7);
-        
-        
-        PlatoController platoController = new PlatoController(platos);
-        
-        platoController.mostrarPlatos();
-        
-        
-        Pedido pedido1 = new Pedido(1);
-        pedido1.addPlato(p7);
-        
-        
-        
-        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -72,7 +43,10 @@ public class Reto5 {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RestauranteView(new MesaController(mesas())).setVisible(true);
+                MesaController mesaController = new MesaController(mesas());
+                PlatoController platoController = new PlatoController(platos());
+                
+                new RestauranteView(mesaController, platoController).setVisible(true);
             }
         });
     }
@@ -97,5 +71,24 @@ public class Reto5 {
         Mesa mesa8 = new Mesa(8);
         mesas.add(mesa8);
         return mesas;
+    }
+    
+    public static Set<Plato> platos() {
+        Set<Plato> platos = new HashSet<>();
+        Plato p1 = new Plato(1, "Bandeja Paisa",21000.00);
+        Plato p2 = new Plato(2, "Arroz Paisa",20000.00);
+        Plato p3 = new Plato(3, "Frijolada",25000.00);
+        Plato p4 = new Plato(4, "Mojarra Frita",35000.00);
+        Plato p5 = new Plato(5, "Ajiaco",20000.00);
+        Plato p6 = new Plato(6, "Arroz con camarones",35000.00);
+        Plato p7 = new Plato(7, "Churrasco",22000.00);
+        platos.add(p1);
+        platos.add(p2);
+        platos.add(p3);
+        platos.add(p4);
+        platos.add(p5);
+        platos.add(p6);
+        platos.add(p7);
+        return platos;
     }
 }

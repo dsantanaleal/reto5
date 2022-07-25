@@ -5,7 +5,11 @@
 package com.misiontic.retos.reto5.view;
 
 import com.misiontic.retos.reto5.controller.MesaController;
+import com.misiontic.retos.reto5.controller.PlatoController;
 import java.awt.GridLayout;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -15,13 +19,17 @@ public class RestauranteView extends javax.swing.JFrame {
 
     /**
      * Creates new form RestauranteView
+     * @param mesaController
      */
-    public RestauranteView(MesaController mesaController) {
+    public RestauranteView(MesaController mesaController, PlatoController platoController) {
         this.mesaController = mesaController;
+        this.platoController = platoController;
+        initPlatoTableModel();
         initComponents();
+        jTabbedPane1.setEnabledAt(2, false);
+        this.mesaController.setTabbedPane(jTabbedPane1);
         panelMesas.setLayout(new GridLayout(4,4));
         mesaController.loadMesas(panelMesas);
-        //jTabbedPane1.add("Mesas", new MesasView());
     }
 
     /**
@@ -35,7 +43,19 @@ public class RestauranteView extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelMesas = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        panelPlatos = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        tablaPlatos = new javax.swing.JScrollPane();
+        tblListaPlatos = new javax.swing.JTable();
+        txtNombre = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        btnAgregar = new javax.swing.JButton();
+        panelMesa = new javax.swing.JPanel();
+        lblMesa = new javax.swing.JLabel();
+        btnAgregarPedido = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPlatos = new javax.swing.JTable();
         btnAgregarMesa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,23 +68,111 @@ public class RestauranteView extends javax.swing.JFrame {
         );
         panelMesasLayout.setVerticalGroup(
             panelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addGap(0, 222, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Mesas", panelMesas);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 471, Short.MAX_VALUE)
+        jLabel1.setText("Nombre");
+
+        tblListaPlatos.setModel(platoTableModel);
+        tablaPlatos.setViewportView(tblListaPlatos);
+
+        txtNombre.setColumns(5);
+
+        txtPrecio.setColumns(5);
+
+        jLabel2.setText("Precio");
+
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelPlatosLayout = new javax.swing.GroupLayout(panelPlatos);
+        panelPlatos.setLayout(panelPlatosLayout);
+        panelPlatosLayout.setHorizontalGroup(
+            panelPlatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPlatosLayout.createSequentialGroup()
+                .addGroup(panelPlatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelPlatosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tablaPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPlatosLayout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnAgregar)))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+        panelPlatosLayout.setVerticalGroup(
+            panelPlatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPlatosLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(panelPlatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregar))
+                .addGap(18, 18, 18)
+                .addComponent(tablaPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Mesa", jPanel2);
+        jTabbedPane1.addTab("Platos", panelPlatos);
+
+        panelMesa.setEnabled(false);
+
+        btnAgregarPedido.setText("Agregar Pedido");
+
+        tblPlatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Platos"
+            }
+        ));
+        jScrollPane1.setViewportView(tblPlatos);
+
+        javax.swing.GroupLayout panelMesaLayout = new javax.swing.GroupLayout(panelMesa);
+        panelMesa.setLayout(panelMesaLayout);
+        panelMesaLayout.setHorizontalGroup(
+            panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMesaLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                .addComponent(btnAgregarPedido)
+                .addGap(31, 31, 31))
+        );
+        panelMesaLayout.setVerticalGroup(
+            panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMesaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnAgregarPedido)
+                        .addComponent(lblMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Mesa", panelMesa);
 
         btnAgregarMesa.setText("Nueva Mesa");
         btnAgregarMesa.addActionListener(new java.awt.event.ActionListener() {
@@ -99,15 +207,53 @@ public class RestauranteView extends javax.swing.JFrame {
 
     private void btnAgregarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMesaActionPerformed
         // TODO add your handling code here:
-        mesaController.agregarMesa(panelMesas);
+        mesaController.agregarMesa(panelMesas);        
     }//GEN-LAST:event_btnAgregarMesaActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String strPrecio = txtPrecio.getText();
+        if(!nombre.isEmpty() && !strPrecio.isEmpty()) {
+            try {
+                double precio = Double.parseDouble(strPrecio);
+                platoController.agregarPlato(nombre, precio);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "El valor de precio no es valido");
+            }
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregarMesa;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton btnAgregarPedido;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblMesa;
+    private javax.swing.JPanel panelMesa;
     private javax.swing.JPanel panelMesas;
+    private javax.swing.JPanel panelPlatos;
+    private javax.swing.JScrollPane tablaPlatos;
+    private javax.swing.JTable tblListaPlatos;
+    private javax.swing.JTable tblPlatos;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 
     private MesaController mesaController;
+    private PlatoController platoController;
+    private DefaultTableModel platoTableModel;
+    
+    
+    
+    private void initPlatoTableModel() {
+        String[] columns = {"Nombre", "Precio"};
+        platoTableModel = new DefaultTableModel(columns, 0);
+        platoController.setPlatoTableModel(platoTableModel);
+        platoController.actualizarPlatos();
+    }
+    
 }
