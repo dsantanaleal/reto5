@@ -6,6 +6,7 @@ package com.misiontic.retos.reto5.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JButton;
 
 /**
  *
@@ -15,7 +16,9 @@ public class Mesa {
     
     int numero;
     Set<Pedido> pedidos = new HashSet<>();
+    Pedido pedidoActual;
     boolean estaLibre = true;
+    JButton btnMesa;
     
     public Mesa(int numero) {
         this.numero = numero;
@@ -23,6 +26,14 @@ public class Mesa {
     
     public int getNumero() {
         return numero;
+    }
+    
+    public void setPedidoActual(Pedido pedidoActual) {
+        this.pedidoActual = pedidoActual;
+    }
+    
+    public Pedido getPedidoActual() {
+        return pedidoActual;
     }
 
     public boolean isEstaLibre() {
@@ -39,6 +50,14 @@ public class Mesa {
     
     public void addPedido(Pedido pedido) {
         pedidos.add(pedido);
+    }
+    
+    public JButton getBtnMesa() {
+        return this.btnMesa;
+    }
+    
+    public void setBtnMesa(JButton btnMesa) {
+        this.btnMesa = btnMesa;
     }
     
 }

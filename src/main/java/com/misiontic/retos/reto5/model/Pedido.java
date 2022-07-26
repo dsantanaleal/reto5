@@ -13,11 +13,13 @@ import java.util.List;
  */
 public class Pedido {
     
-    int numPedido;
     List<Plato> platos = new ArrayList<>();
     
-    public Pedido(int numPedido) {
-        this.numPedido = numPedido;
+    public Pedido() {
+    }
+    
+    public List<Plato> getPlatos() {
+        return platos;
     }
     
     public void addPlato(Plato plato) {

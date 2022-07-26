@@ -14,8 +14,8 @@ import javax.swing.ImageIcon;
  */
 public class Constants {
     
-    public static final int BUTTON_WIDTH = 70;
-    public static final int BUTTON_HEIGHT = 70;
+    public static final int BUTTON_WIDTH = 40;
+    public static final int BUTTON_HEIGHT = 40;
     
     
     public static Icon loadIcon() {

@@ -5,9 +5,23 @@
 package com.misiontic.retos.reto5.view;
 
 import com.misiontic.retos.reto5.controller.MesaController;
+import com.misiontic.retos.reto5.controller.PedidoController;
 import com.misiontic.retos.reto5.controller.PlatoController;
+import com.misiontic.retos.reto5.model.Mesa;
+import com.misiontic.retos.reto5.model.Pedido;
+import com.misiontic.retos.reto5.model.Plato;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -20,16 +34,22 @@ public class RestauranteView extends javax.swing.JFrame {
     /**
      * Creates new form RestauranteView
      * @param mesaController
+     * @param platoController
+     * @param pedidoController
      */
-    public RestauranteView(MesaController mesaController, PlatoController platoController) {
+    public RestauranteView(MesaController mesaController, PlatoController platoController, PedidoController pedidoController) {
         this.mesaController = mesaController;
         this.platoController = platoController;
-        initPlatoTableModel();
+        this.pedidoController = pedidoController;
+        initPlatoModels();
         initComponents();
+        this.pnlControl2.setVisible(false);
         jTabbedPane1.setEnabledAt(2, false);
-        this.mesaController.setTabbedPane(jTabbedPane1);
-        panelMesas.setLayout(new GridLayout(4,4));
-        mesaController.loadMesas(panelMesas);
+        jTabbedPane1.setEnabledAt(3, false);
+        
+        pnlParentMesas.setLayout(new ScrollPaneLayout());
+        pnlChildMesas.setLayout(new GridLayout(3, 5));
+        mesaController.loadMesas(pnlChildMesas);
     }
 
     /**
@@ -43,6 +63,9 @@ public class RestauranteView extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelMesas = new javax.swing.JPanel();
+        btnAgregarMesa = new javax.swing.JButton();
+        pnlParentMesas = new javax.swing.JScrollPane();
+        pnlChildMesas = new javax.swing.JPanel();
         panelPlatos = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         tablaPlatos = new javax.swing.JScrollPane();
@@ -51,24 +74,78 @@ public class RestauranteView extends javax.swing.JFrame {
         txtPrecio = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
-        panelMesa = new javax.swing.JPanel();
+        panelPedido = new javax.swing.JPanel();
+        pnlControl2 = new javax.swing.JPanel();
         lblMesa = new javax.swing.JLabel();
-        btnAgregarPedido = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblPlatos = new javax.swing.JTable();
-        btnAgregarMesa = new javax.swing.JButton();
+        tblPedidoActual = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        cmbPlatos = new javax.swing.JComboBox<>();
+        btnAgregarPlato = new javax.swing.JButton();
+        btnPagarOrden = new javax.swing.JButton();
+        lblMesaActual = new javax.swing.JLabel();
+        btnAnularPedido = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        pnlControl1 = new javax.swing.JPanel();
+        btnOcuparMesa = new javax.swing.JButton();
+        panelCierre = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        lblDia = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lblTotalPedidos = new javax.swing.JLabel();
+        lblTotalVendido = new javax.swing.JLabel();
+        lblMesaTop = new javax.swing.JLabel();
+        lblPlatoTop = new javax.swing.JLabel();
+        btnCerrarDia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        btnAgregarMesa.setText("Nueva Mesa");
+        btnAgregarMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarMesaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlChildMesasLayout = new javax.swing.GroupLayout(pnlChildMesas);
+        pnlChildMesas.setLayout(pnlChildMesasLayout);
+        pnlChildMesasLayout.setHorizontalGroup(
+            pnlChildMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 505, Short.MAX_VALUE)
+        );
+        pnlChildMesasLayout.setVerticalGroup(
+            pnlChildMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 280, Short.MAX_VALUE)
+        );
+
+        pnlParentMesas.setViewportView(pnlChildMesas);
 
         javax.swing.GroupLayout panelMesasLayout = new javax.swing.GroupLayout(panelMesas);
         panelMesas.setLayout(panelMesasLayout);
         panelMesasLayout.setHorizontalGroup(
             panelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 471, Short.MAX_VALUE)
+            .addGroup(panelMesasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlParentMesas)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMesasLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAgregarMesa)))
+                .addContainerGap())
         );
         panelMesasLayout.setVerticalGroup(
             panelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 222, Short.MAX_VALUE)
+            .addGroup(panelMesasLayout.createSequentialGroup()
+                .addComponent(btnAgregarMesa)
+                .addGap(3, 3, 3)
+                .addComponent(pnlParentMesas)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Mesas", panelMesas);
@@ -111,7 +188,7 @@ public class RestauranteView extends javax.swing.JFrame {
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
                         .addComponent(btnAgregar)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
         panelPlatosLayout.setVerticalGroup(
             panelPlatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,59 +202,220 @@ public class RestauranteView extends javax.swing.JFrame {
                     .addComponent(btnAgregar))
                 .addGap(18, 18, 18)
                 .addComponent(tablaPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Platos", panelPlatos);
 
-        panelMesa.setEnabled(false);
+        panelPedido.setEnabled(false);
+        panelPedido.setLayout(new javax.swing.OverlayLayout(panelPedido));
 
-        btnAgregarPedido.setText("Agregar Pedido");
+        lblMesa.setFont(new java.awt.Font("Helvetica Neue", 3, 14)); // NOI18N
 
-        tblPlatos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Platos"
-            }
-        ));
-        jScrollPane1.setViewportView(tblPlatos);
+        jLabel3.setText("PEDIDO ACTUAL");
 
-        javax.swing.GroupLayout panelMesaLayout = new javax.swing.GroupLayout(panelMesa);
-        panelMesa.setLayout(panelMesaLayout);
-        panelMesaLayout.setHorizontalGroup(
-            panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMesaLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addComponent(btnAgregarPedido)
-                .addGap(31, 31, 31))
-        );
-        panelMesaLayout.setVerticalGroup(
-            panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMesaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnAgregarPedido)
-                        .addComponent(lblMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
+        tblPedidoActual.setModel(platoPedidoModel);
+        jScrollPane1.setViewportView(tblPedidoActual);
 
-        jTabbedPane1.addTab("Mesa", panelMesa);
+        jLabel4.setText("Agregar plato");
 
-        btnAgregarMesa.setText("Nueva Mesa");
-        btnAgregarMesa.addActionListener(new java.awt.event.ActionListener() {
+        cmbPlatos.setModel(platoComboModel);
+
+        btnAgregarPlato.setText("Agregar");
+        btnAgregarPlato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarMesaActionPerformed(evt);
+                btnAgregarPlatoActionPerformed(evt);
+            }
+        });
+
+        btnPagarOrden.setText("Pagar pedido");
+        btnPagarOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagarOrdenActionPerformed(evt);
+            }
+        });
+
+        lblMesaActual.setFont(new java.awt.Font("Helvetica Neue", 1, 16)); // NOI18N
+        lblMesaActual.setText("MESA:");
+        lblMesaActual.setToolTipText("");
+
+        btnAnularPedido.setText("Anular Pedido");
+        btnAnularPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnularPedidoActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Total:");
+
+        lblTotal.setFont(new java.awt.Font("Helvetica Neue", 3, 15)); // NOI18N
+
+        javax.swing.GroupLayout pnlControl2Layout = new javax.swing.GroupLayout(pnlControl2);
+        pnlControl2.setLayout(pnlControl2Layout);
+        pnlControl2Layout.setHorizontalGroup(
+            pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControl2Layout.createSequentialGroup()
+                .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlControl2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlControl2Layout.createSequentialGroup()
+                                .addComponent(cmbPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAgregarPlato))
+                            .addComponent(jLabel4)
+                            .addGroup(pnlControl2Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnAnularPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                    .addComponent(btnPagarOrden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(pnlControl2Layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(lblMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(85, Short.MAX_VALUE))
+            .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlControl2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3)
+                        .addComponent(lblMesaActual, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(414, Short.MAX_VALUE)))
+        );
+        pnlControl2Layout.setVerticalGroup(
+            pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControl2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlControl2Layout.createSequentialGroup()
+                        .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPagarOrden)
+                            .addComponent(jLabel5)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAnularPedido)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregarPlato))
+                .addContainerGap(52, Short.MAX_VALUE))
+            .addGroup(pnlControl2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlControl2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(lblMesaActual, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel3)
+                    .addContainerGap(257, Short.MAX_VALUE)))
+        );
+
+        panelPedido.add(pnlControl2);
+
+        btnOcuparMesa.setText("Ocupar Mesa");
+        btnOcuparMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOcuparMesaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlControl1Layout = new javax.swing.GroupLayout(pnlControl1);
+        pnlControl1.setLayout(pnlControl1Layout);
+        pnlControl1Layout.setHorizontalGroup(
+            pnlControl1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControl1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnOcuparMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(365, Short.MAX_VALUE))
+        );
+        pnlControl1Layout.setVerticalGroup(
+            pnlControl1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControl1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnOcuparMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(269, Short.MAX_VALUE))
+        );
+
+        panelPedido.add(pnlControl1);
+
+        jTabbedPane1.addTab("Mesa", panelPedido);
+
+        jLabel6.setText("Cierre caja para:");
+
+        lblDia.setFont(new java.awt.Font("Helvetica Neue", 3, 15)); // NOI18N
+
+        jLabel7.setText("Total Pedidos:");
+
+        jLabel8.setText("Total Vendido:");
+
+        jLabel9.setText("Mesa con mas pedidos:");
+
+        jLabel10.setText("Plato mas pedido:");
+
+        javax.swing.GroupLayout panelCierreLayout = new javax.swing.GroupLayout(panelCierre);
+        panelCierre.setLayout(panelCierreLayout);
+        panelCierreLayout.setHorizontalGroup(
+            panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCierreLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCierreLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDia, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelCierreLayout.createSequentialGroup()
+                        .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
+                        .addGap(28, 28, 28)
+                        .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblPlatoTop, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                            .addComponent(lblMesaTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTotalPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTotalVendido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(132, Short.MAX_VALUE))
+        );
+        panelCierreLayout.setVerticalGroup(
+            panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCierreLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lblDia, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(lblTotalPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(lblTotalVendido, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(lblMesaTop, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(lblPlatoTop, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(171, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Cierre Dia", panelCierre);
+
+        btnCerrarDia.setText("Cerrar caja por este dia");
+        btnCerrarDia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarDiaActionPerformed(evt);
             }
         });
 
@@ -186,20 +424,22 @@ public class RestauranteView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAgregarMesa)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCerrarDia)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
-                .addComponent(btnAgregarMesa)
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(btnCerrarDia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
 
         pack();
@@ -207,7 +447,7 @@ public class RestauranteView extends javax.swing.JFrame {
 
     private void btnAgregarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMesaActionPerformed
         // TODO add your handling code here:
-        mesaController.agregarMesa(panelMesas);        
+        mesaController.agregarMesa(pnlChildMesas);        
     }//GEN-LAST:event_btnAgregarMesaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -224,36 +464,160 @@ public class RestauranteView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    private void btnAgregarPlatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPlatoActionPerformed
+        // TODO add your handling code here:
+        pedidoController.agregarPlatoAPedido((Plato) cmbPlatos.getSelectedItem());
+    }//GEN-LAST:event_btnAgregarPlatoActionPerformed
+
+    private void btnOcuparMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOcuparMesaActionPerformed
+        // TODO add your handling code here:
+        mesaController.ocuparMesa();
+        pnlControl1.setVisible(false);
+        pnlControl2.setVisible(true);
+    }//GEN-LAST:event_btnOcuparMesaActionPerformed
+
+    private void btnPagarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarOrdenActionPerformed
+        // TODO add your handling code here:
+        mesaController.pagarPedido();
+    }//GEN-LAST:event_btnPagarOrdenActionPerformed
+
+    private void btnAnularPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularPedidoActionPerformed
+        // TODO add your handling code here:
+        int selection = JOptionPane.showConfirmDialog(this, "Al anular el pedido, los datos seran borrados permanentemente. Desea continuar?", "Anual Pedido", JOptionPane.YES_NO_OPTION);
+        if(selection == 0) {
+            pedidoController.anularPedido();
+        }
+    }//GEN-LAST:event_btnAnularPedidoActionPerformed
+
+    private void btnCerrarDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarDiaActionPerformed
+        // TODO add your handling code here:
+        if(JOptionPane.showConfirmDialog(this, "Estas seguro de cerrar la caja por hoy?", "Cierre caja", JOptionPane.YES_NO_OPTION) == 0) {
+            mesaController.cerrarCaja();
+            lblDia.setText(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+            jTabbedPane1.setSelectedComponent(panelCierre);
+        }
+    }//GEN-LAST:event_btnCerrarDiaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregarMesa;
-    private javax.swing.JButton btnAgregarPedido;
+    private javax.swing.JButton btnAgregarPlato;
+    private javax.swing.JButton btnAnularPedido;
+    private javax.swing.JButton btnCerrarDia;
+    private javax.swing.JButton btnOcuparMesa;
+    private javax.swing.JButton btnPagarOrden;
+    private javax.swing.JComboBox<Plato> cmbPlatos;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblDia;
     private javax.swing.JLabel lblMesa;
-    private javax.swing.JPanel panelMesa;
+    private javax.swing.JLabel lblMesaActual;
+    private javax.swing.JLabel lblMesaTop;
+    private javax.swing.JLabel lblPlatoTop;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblTotalPedidos;
+    private javax.swing.JLabel lblTotalVendido;
+    private javax.swing.JPanel panelCierre;
     private javax.swing.JPanel panelMesas;
+    private javax.swing.JPanel panelPedido;
     private javax.swing.JPanel panelPlatos;
+    private javax.swing.JPanel pnlChildMesas;
+    private javax.swing.JPanel pnlControl1;
+    private javax.swing.JPanel pnlControl2;
+    private javax.swing.JScrollPane pnlParentMesas;
     private javax.swing.JScrollPane tablaPlatos;
     private javax.swing.JTable tblListaPlatos;
-    private javax.swing.JTable tblPlatos;
+    private javax.swing.JTable tblPedidoActual;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 
     private MesaController mesaController;
     private PlatoController platoController;
+    private PedidoController pedidoController;
     private DefaultTableModel platoTableModel;
+    private DefaultTableModel platoPedidoModel;
+    private DefaultComboBoxModel<Plato> platoComboModel;
     
-    
-    
-    private void initPlatoTableModel() {
+    private void initPlatoModels() {
         String[] columns = {"Nombre", "Precio"};
         platoTableModel = new DefaultTableModel(columns, 0);
         platoController.setPlatoTableModel(platoTableModel);
+        platoComboModel = new DefaultComboBoxModel<>();
+        platoController.setPlatoListModel(platoComboModel);
+        String[] cols = {"Plato", "Precio"};
+        platoPedidoModel = new DefaultTableModel(cols, 0);
         platoController.actualizarPlatos();
+    }
+    
+    public void cambiarAMesasView() {
+        jTabbedPane1.setSelectedComponent(panelMesas);
+    }
+    
+    public void abrirMesa(Mesa mesa) {
+        if(mesa.isEstaLibre()) {
+            pnlControl1.setVisible(true);
+            pnlControl2.setVisible(false);
+        } else {
+            pedidoController.inicializar(mesa);
+            pnlControl1.setVisible(false);
+            pnlControl2.setVisible(true);
+            lblMesa.setText(mesa.getNumero()+"");
+        }
+        jTabbedPane1.setSelectedIndex(2);
+    }
+    
+    public void mostrarPedidoActual(Pedido pedido) {
+        platoPedidoModel.setRowCount(0);
+        for(Plato plato : pedido.getPlatos()) {
+            agregarPlato(plato);
+        }
+    }
+    
+    public void mostrarTotal(double total) {
+        lblTotal.setText(total+"");
+        lblTotal.repaint();
+    }
+    
+    public void agregarPlato(Plato plato) {
+        String[] arrPlato = new String[2];
+        arrPlato[0] = plato.getNombre();
+        arrPlato[1] = plato.getPrecio()+"";
+        platoPedidoModel.addRow(arrPlato);
+        
+    }
+    
+    public void finalizarMesa(Pedido pedidoActual) {
+        int seleccion = JOptionPane.showConfirmDialog(this, String.format("El valor total a cancelar es $ %s . Desea continuar?", pedidoActual.obtenerValorPedido()), "Completar pago", JOptionPane.OK_CANCEL_OPTION);
+        if(seleccion == 0) {
+            mesaController.completarPago();
+        }
+    }
+    
+    public void mostrarTotalPedidos(int total) {
+        lblTotalPedidos.setText(total+"");
+    }
+    
+    public void mostrarTotalVentas(double total) {
+        lblTotalVendido.setText(total+"");
+    }
+    
+    public void mostrarMesaTop(Mesa mesa) {
+        lblMesaTop.setText(String.format("Mesa %s con %s pedidos", mesa.getNumero(), mesa.getPedidos().size()));
+    }
+    
+    public void mostrarPlatoTop(Plato plato, int unidades) {
+        lblPlatoTop.setText(String.format("%s - $ %s - %s unidades", plato.getNombre(), plato.getPrecio(), unidades));
     }
     
 }

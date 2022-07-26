@@ -6,6 +6,7 @@
 package com.misiontic.retos.reto5;
 
 import com.misiontic.retos.reto5.controller.MesaController;
+import com.misiontic.retos.reto5.controller.PedidoController;
 import com.misiontic.retos.reto5.controller.PlatoController;
 import com.misiontic.retos.reto5.model.Mesa;
 import com.misiontic.retos.reto5.model.Pedido;
@@ -13,6 +14,7 @@ import com.misiontic.retos.reto5.model.Plato;
 import com.misiontic.retos.reto5.view.RestauranteView;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -45,14 +47,19 @@ public class Reto5 {
             public void run() {
                 MesaController mesaController = new MesaController(mesas());
                 PlatoController platoController = new PlatoController(platos());
+                PedidoController pedidoController = new PedidoController();
                 
-                new RestauranteView(mesaController, platoController).setVisible(true);
+                RestauranteView view = new RestauranteView(mesaController, platoController, pedidoController);
+                view.setVisible(true);
+                
+                mesaController.setView(view);
+                pedidoController.setView(view);
             }
         });
     }
     
     public static Set<Mesa> mesas() {
-        Set<Mesa> mesas = new HashSet<>();
+        Set<Mesa> mesas = new LinkedHashSet<>();
         
         Mesa mesa1 = new Mesa(1);
         mesas.add(mesa1);
@@ -74,7 +81,7 @@ public class Reto5 {
     }
     
     public static Set<Plato> platos() {
-        Set<Plato> platos = new HashSet<>();
+        Set<Plato> platos = new LinkedHashSet<>();
         Plato p1 = new Plato(1, "Bandeja Paisa",21000.00);
         Plato p2 = new Plato(2, "Arroz Paisa",20000.00);
         Plato p3 = new Plato(3, "Frijolada",25000.00);

@@ -6,6 +6,9 @@ package com.misiontic.retos.reto5.controller;
 
 import com.misiontic.retos.reto5.model.Plato;
 import java.util.Set;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -17,6 +20,7 @@ public class PlatoController {
     
     Set<Plato> platos;
     DefaultTableModel platoTableModel;
+    DefaultComboBoxModel<Plato> platoComboModel;
     
     
     public PlatoController(Set<Plato> platos) {
@@ -27,6 +31,10 @@ public class PlatoController {
         this.platoTableModel = platoTableModel;
     }
     
+    public void setPlatoListModel(DefaultComboBoxModel<Plato> platoComboModel) {
+        this.platoComboModel = platoComboModel;
+    }
+    
     public void agregarPlato(String nombre, double precio) {
         Plato plato = new Plato(platos.size()+1, nombre, precio);
         this.platos.add(plato);
@@ -35,18 +43,14 @@ public class PlatoController {
     
     public void actualizarPlatos() {
         platoTableModel.setRowCount(0);
+        platoComboModel.removeAllElements();
+        platoComboModel.addAll(platos);
         for(Plato plato : platos) {
             String[] arrPlato = new String[2];
             arrPlato[0] = plato.getNombre();
             arrPlato[1] = plato.getPrecio() + "";
             platoTableModel.addRow(arrPlato);
         }
-    }
-    
-    public void mostrarPlatos() {
-        platos.forEach(plato -> {
-            System.out.println(plato);
-        });
     }
     
 }
